@@ -1,7 +1,7 @@
 # encoding: UTF-8
 
 require "nest"
-require "redis"
+require "redis-sentinel"
 require "securerandom"
 require "scrivener"
 require "ohm/transaction"
@@ -98,7 +98,7 @@ module Ohm
     end
 
     def redis
-      threaded[context] ||= Redis.connect(options)
+      threaded[context] ||= Redis.new(options)
     end
 
     def threaded
@@ -117,7 +117,7 @@ module Ohm
   #   Ohm.connect(:port => 6380, :db => 1, :host => "10.0.1.1")
   #   Ohm.connect(:url => "redis://10.0.1.1:6380/1")
   #
-  # All of the options are simply passed on to `Redis.connect`.
+  # All of the options are simply passed on to `Redis.new`.
   #
   def self.connect(options = {})
     conn.start(options)
